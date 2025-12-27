@@ -28,4 +28,4 @@ yarn-error.log*
 .env
 
 # Optional: Uncomment if you want to ignore editor-specific files
-# .vscode/
+.vscode/

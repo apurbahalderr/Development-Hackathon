@@ -19,4 +19,5 @@ export async function POST(req: NextRequest){
     const {email, password} = parsedBody.data;
 
     //TODO: Further code will write when hack begins
+    
 }

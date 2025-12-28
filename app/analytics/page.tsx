@@ -1,11 +1,11 @@
-import React from 'react'
+import { AnalyticsDashboard } from "@/components/analytics/AnalyticsDashboard";
 
-const page = () => {
+export default function AnalyticsPage() {
   return (
-    <div>
-      
+    <div className="min-h-screen bg-bg-main pt-24 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AnalyticsDashboard />
+      </div>
     </div>
-  )
+  );
 }
-
-export default page

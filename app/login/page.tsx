@@ -15,7 +15,7 @@ export default function LoginPage() {
     const [selectedRole, setSelectedRole] = useState<'user' | 'responder' | 'employee' | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string>('');
-    
+
     // Form state
     const [formData, setFormData] = useState({
         name: '',
@@ -57,7 +57,7 @@ export default function LoginPage() {
                 // Set session ID for citizen
                 setSessionId();
                 const sessionId = localStorage.getItem('sessionId') || '';
-                
+
                 response = await fetch('/api/signin/user', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -75,10 +75,11 @@ export default function LoginPage() {
                 }
 
                 userData = {
-                    id: data.data._id,
+                    _id: data.data._id,
                     name: data.data.name,
                     email: data.data.email,
                     phone: data.data.phone?.toString(),
+                    sessionId: localStorage.getItem('sessionId') || '',
                     role: 'user' as const,
                 };
             } else if (selectedRole === 'employee') {
@@ -99,11 +100,12 @@ export default function LoginPage() {
                 }
 
                 userData = {
-                    id: data.data._id,
+                    _id: data.data._id,
                     name: data.data.name,
                     email: data.data.email,
                     phone: data.data.phone?.toString(),
                     role: 'employee' as const,
+                    sessionId: localStorage.getItem('sessionId') || '',
                     department: data.data.department,
                 };
             } else if (selectedRole === 'responder') {
@@ -145,13 +147,13 @@ export default function LoginPage() {
                 }
 
                 userData = {
-                    id: data.data._id,
+                    _id: data.data._id,
                     name: data.data.name,
                     email: data.data.email,
                     phone: data.data.phone?.toString(),
                     role: 'responder' as const,
                     department: data.data.department,
-                    accessCode: formData.accessCode,
+                    sessionId: localStorage.getItem('sessionId') || '',
                 };
             }
 

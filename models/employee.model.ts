@@ -13,14 +13,14 @@ export interface IEmployee extends Document {
 }
 
 const EmployeeSchema = new Schema<IEmployee>({
-    name: {type: String, required: true},
-    email: {type: String, required: true, unique: true},
-    phone: {type: Number, required: true},
-    role: {type: String, enum: ["employee"], default: "employee"},
-    responder: {type: String},
-    department: {type: String, required: true},
-    reportIdAssigned: {type: String},
-    status: {type: String, enum: ["idle", "on-duty"], default: "idle"},
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    phone: { type: Number, required: true },
+    role: { type: String, enum: ["employee"], default: "employee" },
+    responder: { type: String },
+    department: { type: String, required: true },
+    reportIdAssigned: { type: String },
+    status: { type: String, enum: ["idle", "busy"], default: "idle" },
 }, {
     timestamps: true
 })

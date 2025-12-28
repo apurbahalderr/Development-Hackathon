@@ -14,7 +14,7 @@ const reportSchema = z.object({
     }),
     type: z.string(),
     description: z.string(),
-    phone: z.coerce.number().refine(val => val.toString().length === 10, { message: "Phone number must be 10 digits" }),
+    phone: z.coerce.number().refine(val => val.toString().length === 10, { message: "Phone number must be 10 digits" }).optional(),
     image: z.string().optional(),
     severity: z.enum(["high", "medium", "low"]).default("low")
 })

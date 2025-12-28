@@ -13,28 +13,37 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Mock user data
+// Mock user data
 const MOCK_USERS: Record<UserRole, User> = {
-    CITIZEN: {
-        id: 'u1',
+    user: {
+        _id: 'u1',
+        sessionId: 'session_u1',
         name: 'John Demo',
         email: 'john@example.com',
-        role: 'CITIZEN',
-        phone: '+1234567890'
+        role: 'user',
+        phone: 1234567890
     },
-    RESPONDER: {
-        id: 'r1',
+    responder: {
+        _id: 'r1',
+        sessionId: 'session_r1',
         name: 'Officer Sarah',
         email: 'sarah@police.dept',
-        role: 'RESPONDER',
+        role: 'responder',
         department: 'Police',
-        accessCode: 'POL-123'
+        location: { lat: 20.296, lng: 85.824 },
+        address: 'Police Station 1',
+        employees: [],
+        phone: 9876543210
     },
-    EMPLOYEE: {
-        id: 'e1',
+    employee: {
+        _id: 'e1',
+        sessionId: 'session_e1',
         name: 'Dave Tech',
         email: 'dave@maintenance.city',
-        role: 'EMPLOYEE',
-        department: 'Infrastructure'
+        role: 'employee',
+        department: 'Infrastructure',
+        status: 'idle',
+        phone: 1122334455
     }
 };
 

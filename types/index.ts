@@ -1,47 +1,71 @@
-export type UserRole = 'CITIZEN' | 'RESPONDER' | 'EMPLOYEE';
+export type UserRole = 'user' | 'responder' | 'employee';
 
-export type IncidentType = 
-  | 'Crime' 
-  | 'Medical' 
-  | 'Disaster' 
-  | 'Infrastructure Collapse' 
-  | 'Accident' 
+export type ReportType =
+  | 'Crime'
+  | 'Medical'
+  | 'Disaster'
+  | 'Infrastructure Collapse'
+  | 'Accident'
   | 'Other'
-  | 'Emergency'; // For Silent SOS
+  | 'Fire'
+  | 'Emergency';
 
-export type IncidentPriority = 'Critical' | 'High' | 'Medium' | 'Low';
+// "high" | "medium" | "low"
+export type ReportSeverity = 'high' | 'medium' | 'low';
 
-export type IncidentStatus = 'Reported' | 'Verified' | 'Assigned' | 'Resolved';
+// "resolved" | "verified" | "unverified" | "assigning" | "assigned"
+export type ReportStatus = 'resolved' | 'verified' | 'unverified' | 'assigning' | 'assigned';
 
 export interface User {
-  id: string;
+  _id?: string;
   name: string;
   email: string;
-  phone?: string;
+  phone: number;
+  sessionId: string;
   role: UserRole;
-  department?: string; // For responders
-  accessCode?: string; // For responders
+  department?: string;
+  // Responder specific
+  location?: { lat: number, lng: number };
+  address?: string;
+  employees?: string[];
+  // Employee specific
+  responder?: string;
+  reportIdAssigned?: string;
+  status?: 'idle' | 'busy';
 }
 
-export interface Incident {
-  id: string;
-  type: IncidentType;
-  description: string;
-  image?: string; // URL or base64
+export interface Report {
+  _id: string;
+  sessionId: string;
+  userId?: string; // reporterId
+  type: ReportType | string;
   location: {
     lat: number;
     lng: number;
-    address?: string;
   };
-  priority: IncidentPriority;
-  status: IncidentStatus;
-  timestamp: string; // ISO date
-  reporterId?: string; // Optional if anonymous/logged out
+  employeeLocation?: {
+    lat: number;
+    lng: number;
+  };
+  employeeId?: string[];
+  responderId?: string[];
+  responderNotes?: string;
+  description: string;
+  phone?: number;
+  image?: string;
   upvotes: number;
-  isVerified: boolean;
-  assignedResponderId?: string;
-  assignedEmployeeId?: string;
+  downvotes: number;
+  duplicates: number;
+  severity: ReportSeverity;
+  status: ReportStatus;
+  createdAt: string; // ISO date string from JSON
+  updatedAt: string;
 }
 
-// For map pins
-export type PinType = 'critical' | 'verified' | 'unverified' | 'resolved';
+// Map Component specific (optional, if needed to keep separate)
+export interface MapPin {
+  id: string; // report id
+  lat: number;
+  lng: number;
+  type: ReportSeverity | 'verified'; // illustrative custom type
+}

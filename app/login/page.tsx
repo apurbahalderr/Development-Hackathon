@@ -10,9 +10,9 @@ export default function LoginPage() {
     const { login } = useAuth();
     const router = useRouter();
 
-    const handleLogin = (role: 'CITIZEN' | 'RESPONDER' | 'EMPLOYEE') => {
+    const handleLogin = (role: 'user' | 'responder' | 'employee') => {
         login(role);
-        if (role === 'CITIZEN') {
+        if (role === 'user') {
             router.push('/dashboard');
         } else {
             router.push('/responder'); // Employees and Responders go to responder view
@@ -59,7 +59,7 @@ export default function LoginPage() {
                             variant="outline"
                             size="lg"
                             className="w-full justify-start h-16 text-left relative overflow-hidden group"
-                            onClick={() => handleLogin('CITIZEN')}
+                            onClick={() => handleLogin('user')}
                             leftIcon={<User className="mr-3" />}
                         >
                             <div className="flex flex-col items-start z-10 w-full">
@@ -73,7 +73,7 @@ export default function LoginPage() {
                             variant="outline"
                             size="lg"
                             className="w-full justify-start h-16 text-left relative overflow-hidden group hover:border-alert-high hover:text-alert-high"
-                            onClick={() => handleLogin('RESPONDER')}
+                            onClick={() => handleLogin('responder')}
                             leftIcon={<Shield className="mr-3" />}
                         >
                             <div className="flex flex-col items-start z-10 w-full">
@@ -87,7 +87,7 @@ export default function LoginPage() {
                             variant="outline"
                             size="lg"
                             className="w-full justify-start h-16 text-left relative overflow-hidden group hover:border-status-assigned hover:text-status-assigned"
-                            onClick={() => handleLogin('EMPLOYEE')}
+                            onClick={() => handleLogin('employee')}
                             leftIcon={<Briefcase className="mr-3" />}
                         >
                             <div className="flex flex-col items-start z-10 w-full">

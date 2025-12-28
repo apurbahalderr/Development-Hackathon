@@ -29,3 +29,25 @@ yarn-error.log*
 
 # Optional: Uncomment if you want to ignore editor-specific files
 .vscode/
+
+
+# ------------------------
+# Python backend ignores
+# ------------------------
+
+# virtual environments
+venv/
+.venv/
+
+# python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# pytest cache
+.pytest_cache/
+
+# local test assets (optional)
+test_images/
+

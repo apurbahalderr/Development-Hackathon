@@ -1,4 +1,5 @@
 import ApiResponse from "@/utils/ApiResopnse";
+import verifyByMLModel from "@/utils/verifyByMLModel";
 import { NextResponse, type NextRequest } from "next/server";
 import z from "zod"
 const { dbConnect } = await import("@/utils/dbConnect");
@@ -37,8 +38,6 @@ export async function POST(req: NextRequest) {
 
         await dbConnect();
 
-        //TODO:severity aur type yaha par change hoga jab ML model integrate hoga
-
         const newReport = await Report.create({
             sessionId,
             userId,
@@ -53,6 +52,10 @@ export async function POST(req: NextRequest) {
         if(!newReport){
             throw new Error("Report creation failed")
         }
+
+        verifyByMLModel(newReport._id, image, severity, type, location, description).catch(err => {
+            console.error("Background verification failed:", err);
+        });
 
         return NextResponse.json(
             new ApiResponse(true, "Report created successfully", newReport), { status: 201 }

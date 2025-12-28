@@ -10,7 +10,7 @@ export interface IReport extends Document {
     responderId?: string[];
     responderNotes?: string;
     description: string;
-    phone: number;
+    phone?: number;
     image?: string;
     upvotes: number;
     downvotes: number;
@@ -37,7 +37,7 @@ const ReportSchema = new Schema<IReport>({
     responderId: [{ type: String }],
     responderNotes: { type: String },
     description: { type: String, required: true },
-    phone: { type: Number, required: true },
+    phone: { type: Number},
     image: { type: String },
     upvotes: { type: Number, default: 0 },
     downvotes: { type: Number, default: 0 },

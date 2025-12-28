@@ -20,21 +20,59 @@ export async function POST(req: NextRequest){
         }
         
         if(action === "accepted"){
+            // Update report status
             report.status = "assigned";
             await report.save();
+            
+            // Update employee status to busy
+            await Employee.findByIdAndUpdate(employeeId, {
+                status: "busy"
+            });
+            
             return NextResponse.json(
                 new ApiResponse(true, "Report assignment accepted"), { status: 200 }
             )
-        } else if(action === "rejected"){ //FIXME: isko hatana h agar frontend nahi ban paya to
-            const employees = await Employee.find({department: report.type, responder: report.responderId, status: "idle", _id: { $ne: employeeId } });
-            if(employees.length === 0){
+        } else if(action === "rejected" || action === "passed"){
+            // Clear current employee's assignment
+            await Employee.findByIdAndUpdate(employeeId, {
+                reportIdAssigned: undefined,
+                status: "idle"
+            });
+            
+            // Get responder ID from report (first responder in array)
+            const responderId = report.responderId && report.responderId.length > 0 
+                ? report.responderId[0] 
+                : null;
+            
+            if (!responderId) {
                 return NextResponse.json(
-                    new ApiResponse(false, "No idle employees available for reassignment"), { status: 404 }
+                    new ApiResponse(false, "Responder ID not found in report"), { status: 400 }
+                )
+            }
+            
+            // Find another idle employee from the same responder and department
+            const employees = await Employee.find({
+                department: report.type, 
+                responder: responderId, 
+                status: "idle", 
+                _id: { $ne: employeeId },
+                reportIdAssigned: { $exists: false }
+            });
+            
+            if(employees.length === 0){
+                // No more employees available, reset report status
+                report.status = "verified";
+                await report.save();
+                return NextResponse.json(
+                    new ApiResponse(false, "No idle employees available for reassignment. Report status reset to verified."), { status: 404 }
                 )
             }
     
+            // Assign to new employee
             const newEmployee = employees[0];
-            report.employeeId.push(newEmployee._id);
+            if (!report.employeeId.includes(newEmployee._id.toString())) {
+                report.employeeId.push(newEmployee._id.toString());
+            }
             report.status = "assigning";
             await report.save();
     

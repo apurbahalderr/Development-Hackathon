@@ -38,7 +38,10 @@ export async function POST(req: NextRequest) {
         if (employeeAssigned) {
             const report = await Report.findByIdAndUpdate(reportId, {
                 $push: { employeeId: employeeId },
-                $set: { status: "assigning" }
+                $set: { 
+                    status: "assigning",
+                    responderId: [responderId]
+                }
             })
 
             if (!report) {

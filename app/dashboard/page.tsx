@@ -6,7 +6,10 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Report } from '@/types';
 import { LayoutDashboard, Clock, MapPin, ChevronUp, ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/context/AuthContext';
+import ResponderDashboard from '@/components/dashboard/ResponderDashboard';
+import EmployeeDashboard from '@/components/dashboard/EmployeeDashboard';
 
 // Dynamic import for Map
 const LiveMap = dynamic(() => import('@/components/map/LiveMap'), {
@@ -59,7 +62,8 @@ const MOCK_INCIDENTS: Report[] = [
     }
 ];
 
-export default function DashboardPage() {
+// Citizen Dashboard Component (original dashboard)
+function CitizenDashboard() {
     const [isPanelOpen, setIsPanelOpen] = useState(true);
 
     return (
@@ -146,4 +150,26 @@ export default function DashboardPage() {
             </div>
         </div>
     );
+}
+
+export default function DashboardPage() {
+    const { user, isLoading } = useAuth();
+
+    if (isLoading) {
+        return (
+            <div className="h-[calc(100vh-64px)] flex items-center justify-center bg-bg-main">
+                <div className="text-text-secondary">Loading...</div>
+            </div>
+        );
+    }
+
+    // Render dashboard based on user role
+    if (user?.role === 'responder') {
+        return <ResponderDashboard />;
+    } else if (user?.role === 'employee') {
+        return <EmployeeDashboard />;
+    } else {
+        // Default: Citizen dashboard
+        return <CitizenDashboard />;
+    }
 }

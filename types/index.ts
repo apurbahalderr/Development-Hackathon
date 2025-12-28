@@ -18,10 +18,11 @@ export type ReportStatus = 'resolved' | 'verified' | 'unverified' | 'assigning' 
 
 export interface User {
   _id?: string;
+  id?: string; // For compatibility with localStorage stored user
   name: string;
   email: string;
   phone: number;
-  sessionId: string;
+  sessionId?: string; // Optional for employees/responders
   role: UserRole;
   department?: string;
   // Responder specific

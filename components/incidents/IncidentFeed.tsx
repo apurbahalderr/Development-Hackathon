@@ -83,7 +83,7 @@ export function IncidentFeed() {
                     <IncidentCard 
                         key={incident._id} 
                         incident={incident} 
-                        onClick={setSelectedIncident}
+                        onClick={(e, incident) => setSelectedIncident(incident)}
                         onVote={handleVote}
                     />
                 ))

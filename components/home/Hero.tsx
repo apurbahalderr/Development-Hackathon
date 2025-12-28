@@ -9,12 +9,7 @@ export function Hero() {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="text-center max-w-3xl mx-auto">
-                    <div className="flex items-center justify-center mb-6">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
-                            <span className="flex h-2 w-2 rounded-full bg-primary mr-2 animate-pulse"></span>
-                            Live Incident Tracking System
-                        </span>
-                    </div>
+                    
 
                     <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6">
                         The Pulse of <br />

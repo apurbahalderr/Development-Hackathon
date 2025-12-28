@@ -36,7 +36,7 @@ export default function RootLayout({
         <NotificationManager />
         <AuthProvider>
           <Navbar />
-          <main className="grow">
+          <main className="grow pt-24">
             <PageTransition>
               {children}
             </PageTransition>

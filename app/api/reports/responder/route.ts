@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         const res = await jwtDecode();
         if (!res.success) {
             return NextResponse.json(
-                new ApiResponse(false, res.message), { status: 401 }
+                new ApiResponse(false, res.message || "Unauthorized"), { status: 401 }
             );
         }
 
@@ -47,15 +47,15 @@ export async function GET(req: NextRequest) {
         let query: any = {};
 
         // Determine target department (use filter if specified, otherwise responder's department)
-        const targetDepartment = (departmentFilter && departmentFilter !== 'all') 
-            ? departmentFilter 
+        const targetDepartment = (departmentFilter && departmentFilter !== 'all')
+            ? departmentFilter
             : responder.department;
 
         // Get report types that match the target department
         const matchingTypes = Object.entries(departmentMapping)
             .filter(([_, dept]) => dept === targetDepartment)
             .map(([type, _]) => type);
-        
+
         // If we have matching types, filter by them
         if (matchingTypes.length > 0) {
             query.type = { $in: matchingTypes };

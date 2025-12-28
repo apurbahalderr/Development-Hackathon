@@ -8,7 +8,8 @@ export interface IEmployee extends Document {
     role: "employee";
     responder?: string; //ye responder ka id hoga jisse ye juda hoga aur ye tabhi aayega jab responder is employee ka email dalega
     department: string;
-    status: "idle" | "on-duty";
+    reportIdAssigned?: string;
+    status: "idle" | "busy";
 }
 
 const EmployeeSchema = new Schema<IEmployee>({
@@ -18,6 +19,7 @@ const EmployeeSchema = new Schema<IEmployee>({
     role: {type: String, enum: ["employee"], default: "employee"},
     responder: {type: String},
     department: {type: String, required: true},
+    reportIdAssigned: {type: String},
     status: {type: String, enum: ["idle", "on-duty"], default: "idle"},
 }, {
     timestamps: true

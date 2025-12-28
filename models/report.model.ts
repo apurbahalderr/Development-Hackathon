@@ -5,7 +5,9 @@ export interface IReport extends Document {
     userId?: string;
     type: string;
     location: { lat: number, lng: number };
-    responderLocation?: { lat: number, lng: number };
+    employeeLocation?: { lat: number, lng: number };
+    employeeId?: string[];
+    responderId?: string[];
     responderNotes?: string;
     description: string;
     phone: number;
@@ -14,7 +16,7 @@ export interface IReport extends Document {
     downvotes: number;
     duplicates: number;
     severity: "high" | "medium" | "low";
-    status: "resolved" | "verified" | "unverified";
+    status: "resolved" | "verified" | "unverified" | "assigning" | "assigned";
     createdAt: Date;
     updatedAt: Date;
 }
@@ -27,10 +29,12 @@ const ReportSchema = new Schema<IReport>({
         lat: { type: Number, required: true },
         lng: { type: Number, required: true }
     },
-    responderLocation: {
+    employeeLocation: {
         lat: { type: Number },
         lng: { type: Number }
     },
+    employeeId: [{ type: String }],
+    responderId: [{ type: String }],
     responderNotes: { type: String },
     description: { type: String, required: true },
     phone: { type: Number, required: true },
@@ -39,7 +43,7 @@ const ReportSchema = new Schema<IReport>({
     downvotes: { type: Number, default: 0 },
     duplicates: { type: Number, default: 0 },
     severity: { type: String, enum: ["high", "medium", "low"], default: "low" },
-    status: { type: String, enum: ["resolved", "verified", "unverified"], default: "unverified" },
+    status: { type: String, enum: ["resolved", "verified", "unverified", "assigning", "assigned"], default: "unverified" },
 }, {
     timestamps: true
 })

@@ -1,59 +1,54 @@
-import { Report } from "@/models/report.model";
-import { dbConnect } from "@/utils/dbConnect";
-import { NextResponse, type NextRequest } from "next/server";
-import ApiResponse from "@/utils/ApiResopnse";
-import z from "zod";
+import { NextResponse } from 'next/server';
+import { dbConnect } from '@/utils/dbConnect';
+import { Report } from '@/models/report.model';
+import mongoose from 'mongoose';
 
-const voteSchema = z.object({
-    reportId: z.string(),
-    action: z.enum(["upvote", "downvote"])
-});
-
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
     try {
-        const body = await req.json();
-        const parsedBody = voteSchema.safeParse(body);
+        await dbConnect();
+        const { reportId, action } = await req.json();
 
-        if (!parsedBody.success) {
+        if (!reportId || !['upvote', 'downvote'].includes(action)) {
             return NextResponse.json(
-                new ApiResponse(false, "Invalid input", null, parsedBody.error.message), { status: 400 }
+                { success: false, error: "Invalid request" },
+                { status: 400 }
             );
         }
 
-        const { reportId, action } = parsedBody.data;
-        await dbConnect();
+        if (!mongoose.Types.ObjectId.isValid(reportId)) {
+            return NextResponse.json(
+                { success: false, error: "Invalid report ID" },
+                { status: 400 }
+            );
+        }
 
-        const updateQuery = action === "upvote" 
-            ? { $inc: { upvotes: 1 } } 
+        const update = action === 'upvote'
+            ? { $inc: { upvotes: 1 } }
             : { $inc: { downvotes: 1 } };
 
-        const report = await Report.findByIdAndUpdate(
+        const updatedReport = await Report.findByIdAndUpdate(
             reportId,
-            updateQuery,
-            { new: true }
+            update,
+            { new: true } // Return the updated document
         );
 
-        if (!report) {
+        if (!updatedReport) {
             return NextResponse.json(
-                new ApiResponse(false, "Report not found", null), { status: 404 }
+                { success: false, error: "Report not found" },
+                { status: 404 }
             );
         }
 
-        const voteDifference = report.upvotes - report.downvotes;
-        
-        if (voteDifference >= 20 && report.status === "unverified") {
-            report.status = "verified";
-            await report.save();
-        }
-
-        return NextResponse.json(
-            new ApiResponse(true, "Vote recorded successfully", report)
-        );
+        return NextResponse.json({
+            success: true,
+            data: updatedReport
+        });
 
     } catch (error) {
-        console.error("Error voting:", error);
+        console.error("Error processing vote:", error);
         return NextResponse.json(
-            new ApiResponse(false, "Internal Server Error", null, (error as Error).message), { status: 500 }
+            { success: false, error: "Failed to process vote" },
+            { status: 500 }
         );
     }
 }

@@ -67,3 +67,22 @@ export async function POST(req: NextRequest) {
         )
     }
 }
+
+export async function GET(req: NextRequest) {
+    try {
+        await dbConnect();
+        const reports = await Report.find({})
+            .sort({ createdAt: -1 })
+            .limit(20);
+
+        return NextResponse.json(
+            new ApiResponse(true, "Reports fetched successfully", reports), { status: 200 }
+        );
+    } catch (error) {
+        console.error("Error fetching reports:", error);
+        return NextResponse.json(
+            new ApiResponse(false, "Server error while fetching reports", null, (error as Error).message), { status: 500 }
+        );
+    }
+}
+

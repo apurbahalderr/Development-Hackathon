@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState, Fragment } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap, Polyline } from 'react-leaflet';
+import { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Report } from '@/types';
@@ -64,7 +64,6 @@ interface LiveMapProps {
     zoom?: number;
     interactive?: boolean;
     onLocationSelect?: (lat: number, lng: number) => void;
-    onIncidentClick?: (incident: Report) => void;
     selectedLocation?: [number, number] | null;
     className?: string;
 }
@@ -75,7 +74,6 @@ export default function LiveMap({
     zoom = 13,
     interactive = true,
     onLocationSelect,
-    onIncidentClick,
     selectedLocation,
     className = "h-full w-full rounded-lg"
 }: LiveMapProps) {

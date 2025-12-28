@@ -2,17 +2,17 @@ import ApiResponse from "@/utils/ApiResopnse";
 import { NextResponse, type NextRequest } from "next/server";
 import z from "zod"
 import { dbConnect } from "@/utils/dbConnect";
-import { User } from "@/models/user.model";
+import { Employee } from "@/models/employee.model";
 import jwt from "jsonwebtoken";
 
 const loginSchema = z.object({
     name: z.string(),
     email: z.email(),
     phone: z.coerce.number().refine(val => val.toString().length === 10, { message: "Phone number must be 10 digits" }),
-    sessionId: z.string(),
+    department: z.string()
 })
 
-//normal user ka sign in yaha par hoga
+//normal employee ka sign in yaha par hoga
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json()
@@ -25,41 +25,26 @@ export async function POST(req: NextRequest) {
             )
         }
 
-        const { email, phone, name, sessionId } = parsedBody.data;
+        const { email, phone, name, department } = parsedBody.data;
         await dbConnect();
-        let user = await User.findOne({ email });
-        let isPhoneUpdated = false;
-        let msg = ""
+        let employee = await Employee.findOne({ email });
 
-        if (!user) {
-            console.log("User not exist, creating new user")
-            user = await User.create({
+        if (!employee) {
+            console.log("Employee not exist, creating new employee")
+            employee = await Employee.create({
                 name, 
                 email,
                 phone,
-                sessionId,
-                role: "user"
+                department,
+                role: "employee"
             })
-        } else {
-            console.log("User exists")
-            if(user.phone !== phone){
-                user.phone = phone;
-                isPhoneUpdated = true;
-                await user.save();
-            }
         }
-
-        if(isPhoneUpdated){
-            msg = "Sign in successful, phone number updated";
-        } else {
-            msg = "Sign in successful";
-        }
+       
 
         const payload = {
-            _id: user._id,
-            sessionId: user.sessionId,
-            role: user.role,
-            email: user.email
+            _id: employee._id,
+            role: employee.role,
+            email: employee.email
         } as jwt.JwtPayload
 
         const secret = process.env.JWT_SECRET as string;
@@ -68,7 +53,7 @@ export async function POST(req: NextRequest) {
         const token = jwt.sign(payload, secret, expiresIn)
 
         const response = NextResponse.json(
-            new ApiResponse(true, msg, user), {status: 200}
+            new ApiResponse(true, "Sign in successful", employee), {status: 200}
         )
         response.cookies.set("token", token, {
             httpOnly: true,

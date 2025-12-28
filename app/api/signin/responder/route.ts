@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import z from "zod"
 
 import { dbConnect } from "@/utils/dbConnect";
-import { User } from "@/models/user.model";
+import {Responder} from "@/models/responder.model";
 import jwt from "jsonwebtoken";
 
 const loginSchema = z.object({
@@ -15,6 +15,7 @@ const loginSchema = z.object({
     department: z.string()
 })
 
+//resonder ka sign in ke liye ye page h
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json()
@@ -27,9 +28,9 @@ export async function POST(req: NextRequest) {
             )
         }
 
-        const { email, name, sessionId, accessCode, department } = parsedBody.data;
+        const { email, name, accessCode, phone, department } = parsedBody.data;
         await dbConnect();
-        let user = await User.findOne({ email });
+        let responder = await Responder.findOne({ email });
 
 
         if (accessCode !== process.env.ACCESS_CODE) {
@@ -39,12 +40,12 @@ export async function POST(req: NextRequest) {
         }
 
 
-        if (!user) {
-            console.log("User not exist, creating new user")
-            user = await User.create({
+        if (!responder) {
+            console.log("responder not exist, creating new responder")
+            responder = await Responder.create({
                 name,
                 email,
-                sessionId,
+                phone,
                 role: "responder",
                 department
             })
@@ -52,10 +53,9 @@ export async function POST(req: NextRequest) {
 
        
         const payload = {
-            _id: user._id,
-            sessionId: user.sessionId,
-            role: user.role,
-            email: user.email
+            _id: responder._id,
+            role: responder.role,
+            email: responder.email
         } as jwt.JwtPayload
 
         const secret = process.env.JWT_SECRET as string;
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
         const token = jwt.sign(payload, secret, expiresIn)
 
         const response = NextResponse.json(
-            new ApiResponse(true, "Sign in successful", user), { status: 200 }
+            new ApiResponse(true, "Sign in successful", responder), { status: 200 }
         )
         response.cookies.set("token", token, {
             httpOnly: true,

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/context/AuthContext';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { color } from 'framer-motion';
 
 export function Navbar() {
     const { user, logout } = useAuth();
@@ -32,7 +33,7 @@ export function Navbar() {
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2">
                         <Image src="/logo.jpeg" alt="Pulstrix Logo" width={32} height={32} className="object-contain rounded" />
-                        <span className="text-xl font-bold tracking-tight text-white">Pulstrix</span>
+                        <span className="text-xl font-bold tracking-tight text-white">Pulstri<span style={{ color: '#007BFF' }}>X</span></span>
                     </Link>
 
                     {/* Desktop Nav */}

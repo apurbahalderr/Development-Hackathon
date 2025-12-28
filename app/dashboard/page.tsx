@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { Incident } from '@/types';
+import { Report } from '@/types';
 import { LayoutDashboard, Clock, MapPin, ChevronUp, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
@@ -14,39 +14,48 @@ const LiveMap = dynamic(() => import('@/components/map/LiveMap'), {
     ssr: false
 });
 
-const MOCK_INCIDENTS: Incident[] = [
+const MOCK_INCIDENTS: Report[] = [
     {
-        id: '1',
+        _id: '1',
+        sessionId: 's1',
         type: 'Crime',
         description: 'Suspicious activity reported near the park entrance.',
         location: { lat: 20.291, lng: 85.820 },
-        priority: 'Medium',
-        status: 'Verified',
-        timestamp: new Date().toISOString(),
-        isVerified: true,
-        upvotes: 5
+        severity: 'medium',
+        status: 'verified',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        upvotes: 5,
+        downvotes: 0,
+        duplicates: 0,
     },
     {
-        id: '2',
+        _id: '2',
+        sessionId: 's2',
         type: 'Medical',
         description: 'Ambulance required for cardiac arrest patient.',
         location: { lat: 20.301, lng: 85.830 },
-        priority: 'Critical',
-        status: 'Assigned',
-        timestamp: new Date().toISOString(),
-        isVerified: true,
-        upvotes: 2
+        severity: 'high',
+        status: 'assigned',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        upvotes: 2,
+        downvotes: 0,
+        duplicates: 0,
     },
     {
-        id: '3',
+        _id: '3',
+        sessionId: 's3',
         type: 'Infrastructure Collapse',
         description: 'Road cave-in detected.',
         location: { lat: 20.298, lng: 85.815 },
-        priority: 'High',
-        status: 'Reported',
-        timestamp: new Date().toISOString(),
-        isVerified: false,
-        upvotes: 8
+        severity: 'high',
+        status: 'unverified',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        upvotes: 8,
+        downvotes: 0,
+        duplicates: 0,
     }
 ];
 
@@ -76,12 +85,12 @@ export default function DashboardPage() {
 
                 <div className="overflow-y-auto flex-1 p-4 space-y-4 pb-20 md:pb-4">
                     {MOCK_INCIDENTS.map((incident) => (
-                        <Card key={incident.id} className="cursor-pointer hover:border-primary transition-colors">
+                        <Card key={incident._id} className="cursor-pointer hover:border-primary transition-colors">
                             <CardContent className="p-4">
                                 <div className="flex justify-between items-start mb-2">
-                                    <Badge priority={incident.priority}>{incident.type}</Badge>
+                                    <Badge priority={incident.severity}>{incident.type}</Badge>
                                     <span className="text-xs text-text-muted">
-                                        {new Date(incident.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        {new Date(incident.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </span>
                                 </div>
                                 <p className="text-sm text-text-primary mb-2 line-clamp-2">{incident.description}</p>

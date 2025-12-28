@@ -1,19 +1,10 @@
 "use client";
 
 import { ThumbsUp, MapPin, Clock } from "lucide-react";
-
-interface Incident {
-    id: string;
-    type: string;
-    description: string;
-    severity: "critical" | "high" | "medium" | "low";
-    timestamp: Date;
-    upvotes: number;
-    location: { lat: number, lng: number };
-}
+import { Report } from "@/types";
 
 interface IncidentFeedProps {
-    incidents: Incident[];
+    incidents: Report[];
 }
 
 export default function IncidentFeed({ incidents }: IncidentFeedProps) {
@@ -32,7 +23,7 @@ export default function IncidentFeed({ incidents }: IncidentFeedProps) {
                 ) : (
                     incidents.map((incident) => (
                         <div
-                            key={incident.id}
+                            key={incident._id}
                             className="bg-bg-card p-4 rounded-lg border border-border-main hover:border-bg-main transition-colors group"
                         >
                             <div className="flex justify-between items-start mb-2">
@@ -40,11 +31,10 @@ export default function IncidentFeed({ incidents }: IncidentFeedProps) {
                                     <h3 className="font-semibold text-text-primary">{incident.type}</h3>
                                     <div className="flex items-center gap-2 text-xs text-text-secondary mt-1">
                                         <Clock className="w-3 h-3" />
-                                        <span>{incident.timestamp.toLocaleTimeString()}</span>
+                                        <span>{new Date(incident.createdAt).toLocaleTimeString()}</span>
                                     </div>
                                 </div>
                                 <span className={`px-2 py-1 rounded text-xs font-bold uppercase tracking-wider
-                  ${incident.severity === 'critical' ? 'bg-alert-critical/10 text-alert-critical border border-alert-critical/20' : ''}
                   ${incident.severity === 'high' ? 'bg-alert-high/10 text-alert-high border border-alert-high/20' : ''}
                   ${incident.severity === 'medium' ? 'bg-alert-medium/10 text-alert-medium border border-alert-medium/20' : ''}
                   ${incident.severity === 'low' ? 'bg-alert-low/10 text-alert-low border border-alert-low/20' : ''}

@@ -3,13 +3,14 @@ import { Responder } from "@/models/responder.model";
 import { Report } from "@/models/report.model";
 
 const departmentMapping: Record<string, string> = {
-    "fire": "Fire Department",
-    "roadAccident": "Traffic Police",
-    "medical": "Health Department",
-    "crime": "Police Department",
-    "disaster": "Disaster Management",
-    "infrastructureCollapse": "Public Works Department",
-    "other": "General"
+    "Fire": "Fire Department",
+    "Accident": "Traffic Police",
+    "Medical": "Health Department",
+    "Crime": "Police Department",
+    "Disaster": "Disaster Management",
+    "Infrastructure Collapse": "Public Works Department",
+    "Other": "General",
+    "Emergency": "Emergency Response"
 };
 
 export default async function verifyByMLModel(

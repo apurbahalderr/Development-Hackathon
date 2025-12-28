@@ -25,9 +25,9 @@ export default function ReportForm({ onSubmit, onCancel, userLocation }: ReportF
         let severity = "low";
         const curDesc = description.toLowerCase();
         if (curDesc.includes("fire") || curDesc.includes("blood") || curDesc.includes("gun") || curDesc.includes("explosion")) {
-            severity = "critical";
-        } else if (curDesc.includes("hurt") || curDesc.includes("injured") || curDesc.includes("crash")) {
             severity = "high";
+        } else if (curDesc.includes("hurt") || curDesc.includes("injured") || curDesc.includes("crash")) {
+            severity = "medium";
         }
 
         const reportData = {
@@ -62,10 +62,12 @@ export default function ReportForm({ onSubmit, onCancel, userLocation }: ReportF
                         >
                             <option>Accident</option>
                             <option>Fire</option>
-                            <option>Medical Emergency</option>
-                            <option>Public Disturbance</option>
-                            <option>Natural Disaster</option>
+                            <option>Medical</option>
+                            <option>Crime</option>
+                            <option>Disaster</option>
+                            <option>Infrastructure Collapse</option>
                             <option>Other</option>
+                            <option>Emergency</option>
                         </select>
                     </div>
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { Report } from "@/types";
 
 // Fix for default marker icons in Next.js
 const iconUrl = "https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png";
@@ -33,10 +34,9 @@ const createCustomIcon = (color: string) => {
     });
 };
 
-const icons = {
-    critical: createCustomIcon("#EF4444"), // Red
-    high: createCustomIcon("#F97316"),     // Orange
-    medium: createCustomIcon("#FACC15"),   // Yellow
+const icons: Record<string, L.DivIcon> = {
+    high: createCustomIcon("#EF4444"),     // Red
+    medium: createCustomIcon("#F97316"),   // Orange
     low: createCustomIcon("#22C55E"),      // Green
     default: createCustomIcon("#3B82F6"),  // Blue
 };
@@ -45,16 +45,6 @@ interface Location {
     lat: number;
     lng: number;
 }
-
-interface Incident {
-    id: string;
-    type: string;
-    description: string;
-    severity: "critical" | "high" | "medium" | "low";
-    location: Location;
-    timestamp: Date;
-}
-
 
 // Responder Icon
 const responderIcon = L.divIcon({
@@ -66,7 +56,7 @@ const responderIcon = L.divIcon({
 
 interface MapProps {
     userLocation: Location | null;
-    incidents: Incident[];
+    incidents: Report[];
     responderLocation?: Location | null;
 }
 
@@ -128,7 +118,7 @@ export default function MapComponent({ userLocation, incidents, responderLocatio
 
                 {incidents.map((incident) => (
                     <Marker
-                        key={incident.id}
+                        key={incident._id}
                         position={[incident.location.lat, incident.location.lng]}
                         icon={icons[incident.severity] || icons.default}
                     >
@@ -136,7 +126,7 @@ export default function MapComponent({ userLocation, incidents, responderLocatio
                             <div className="p-2">
                                 <h3 className="font-bold text-sm">{incident.type}</h3>
                                 <p className="text-xs text-gray-500">{incident.description}</p>
-                                <span className={`text-xs font-semibold uppercase text-${incident.severity === 'critical' ? 'alert-critical' : 'text-primary'}`}>
+                                <span className={`text-xs font-semibold uppercase text-${incident.severity === 'high' ? 'alert-high' : 'text-primary'}`}>
                                     {incident.severity}
                                 </span>
                             </div>

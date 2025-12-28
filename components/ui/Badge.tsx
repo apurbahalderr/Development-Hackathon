@@ -1,11 +1,16 @@
-import { IncidentPriority, IncidentStatus, PinType } from '@/types';
+import { ReportSeverity, ReportStatus, MapPin } from '@/types';
+// Adjusted PinType to MapPin.type if needed, or just keep string literals if PinType was removed.
+// In types/index.ts I defined MapPin but not PinType alias explicitly. 
+// I will check types/index.ts again. I defined: export type MapPin = { ... type: ReportSeverity | 'verified'; }
+// So I should probably just use the string values or re-export PinType or define it here.
+// For now, I'll use string literals or assume PinType is replaced by ReportSeverity | string.
 
 interface BadgeProps {
     children: React.ReactNode;
     variant?: 'default' | 'outline' | 'solid';
-    status?: IncidentStatus;
-    priority?: IncidentPriority;
-    pinType?: PinType;
+    status?: ReportStatus;
+    priority?: ReportSeverity;
+    pinType?: string; // Relaxed type
     className?: string;
 }
 
@@ -21,24 +26,21 @@ export function Badge({
     let borderClass = 'border-border-main';
 
     // Determine color based on props precedence
-    if (priority === 'Critical' || pinType === 'critical') {
-        colorClass = 'bg-alert-critical/20 text-alert-critical border-alert-critical/30';
-    } else if (priority === 'High') {
+    if (priority === 'high') {
         colorClass = 'bg-alert-high/20 text-alert-high border-alert-high/30';
-    } else if (priority === 'Medium') {
+    } else if (priority === 'medium') {
         colorClass = 'bg-alert-medium/20 text-alert-medium border-alert-medium/30';
-    } else if (priority === 'Low') {
-        colorClass = 'bg-alert-low/20 text-alert-low border-alert-low/30'; // Note: Low corresponds to correct green/success color in theme? Green is verified/resolved. Low is usually green too.
-        // Theme says: low: #22C55E (Green)
+    } else if (priority === 'low') {
+        colorClass = 'bg-alert-low/20 text-alert-low border-alert-low/30';
     }
 
-    if (status === 'Resolved' || pinType === 'resolved') {
+    if (status === 'resolved' || pinType === 'resolved') {
         colorClass = 'bg-status-resolved/20 text-status-resolved border-status-resolved/30';
-    } else if (status === 'Assigned') {
+    } else if (status === 'assigned' || status === 'assigning') {
         colorClass = 'bg-status-assigned/20 text-status-assigned border-status-assigned/30';
-    } else if (status === 'Verified' || pinType === 'verified') {
-        colorClass = 'bg-info/20 text-info border-info/30'; // Verified is blue
-    } else if (pinType === 'unverified') {
+    } else if (status === 'verified' || pinType === 'verified') {
+        colorClass = 'bg-info/20 text-info border-info/30';
+    } else if (status === 'unverified' || pinType === 'unverified') {
         colorClass = 'bg-text-secondary/20 text-text-secondary border-text-secondary/30';
     }
 

@@ -174,7 +174,7 @@ export default function LoginPage() {
 
     if (selectedRole) {
         return (
-            <div className="min-h-screen bg-bg-main flex items-center justify-center px-4">
+            <div className="min-h-screen pt-24 bg-bg-main flex items-center justify-center px-4">
                 <Card className="w-full max-w-md bg-bg-card border-border-main">
                     <CardHeader>
                         <div className="flex items-center gap-3 mb-2">
@@ -276,7 +276,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen bg-bg-main flex items-center justify-center px-4">
+        <div className="min-h-screen pt-24 bg-bg-main flex items-center justify-center px-4">
             <div className="max-w-4xl w-full grid md:grid-cols-2 gap-8 items-center">
                 <div>
                     <h1 className="text-4xl font-bold text-white mb-4">Welcome Back to <span className="text-primary">Pulstrix</span></h1>

@@ -3,7 +3,7 @@ import { IncidentFeed } from '@/components/incidents/IncidentFeed';
 
 export default function ReportPage() {
     return (
-        <div className="min-h-[calc(100vh-64px)] bg-bg-main p-4 md:p-8">
+        <div className="min-h-screen mt-20 bg-bg-main p-4 md:p-8">
             <div className="max-w-7xl mx-auto h-full">
                 <div className="grid lg:grid-cols-12 gap-6 h-full">
 

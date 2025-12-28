@@ -1,8 +1,11 @@
 fastapi
 uvicorn
+# torch and torchvision will be installed via the Dockerfile command to ensure CPU version
+# but we keep them here for local development compatibility
 torch
 torchvision
 pillow
 requests
 numpy
 pandas
+python-multipart

@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         const res = await jwtDecode();
         if (!res.success) {
             return NextResponse.json(
-                new ApiResponse(false, res.message), { status: 401 }
+                new ApiResponse(false, res.message || "Unauthorized"), { status: 401 }
             );
         }
 

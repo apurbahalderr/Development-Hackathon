@@ -10,6 +10,7 @@ export interface IEmployee extends Document {
     department: string;
     reportIdAssigned?: string;
     status: "idle" | "busy";
+    location?: { lat: number, lng: number };
 }
 
 const EmployeeSchema = new Schema<IEmployee>({
@@ -21,6 +22,10 @@ const EmployeeSchema = new Schema<IEmployee>({
     department: { type: String, required: true },
     reportIdAssigned: { type: String },
     status: { type: String, enum: ["idle", "busy"], default: "idle" },
+    location: {
+        lat: { type: Number },
+        lng: { type: Number }
+    }
 }, {
     timestamps: true
 })

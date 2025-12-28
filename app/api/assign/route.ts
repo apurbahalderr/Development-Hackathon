@@ -32,13 +32,14 @@ export async function POST(req: NextRequest) {
     try {
         await dbConnect();
         const employeeAssigned = await Employee.findByIdAndUpdate(employeeId, {
-            reportIdAssigned: reportId
+            reportIdAssigned: reportId,
+            status: "busy"
         })
 
         if (employeeAssigned) {
             const report = await Report.findByIdAndUpdate(reportId, {
                 $push: { employeeId: employeeId },
-                $set: { 
+                $set: {
                     status: "assigning",
                     responderId: [responderId]
                 }

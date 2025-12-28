@@ -18,7 +18,12 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray;
 }
 
-export default function NotificationManager({ className }: { className?: string }) {
+interface NotificationManagerProps {
+  className?: string;
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success';
+}
+
+export default function NotificationManager({ className, variant = "ghost" }: NotificationManagerProps) {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [subscription, setSubscription] = useState<PushSubscription | null>(null);
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
@@ -72,7 +77,7 @@ export default function NotificationManager({ className }: { className?: string 
   return (
     <Button 
       onClick={subscribeUser}
-      variant="ghost"
+      variant={variant}
       size="sm"
       className={`text-text-secondary hover:text-white ${className}`}
       leftIcon={<Bell size={18} />}

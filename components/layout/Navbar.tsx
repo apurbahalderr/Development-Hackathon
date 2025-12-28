@@ -8,6 +8,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { color } from 'framer-motion';
+import NotificationManager from '@/components/NotificationManager';
 
 export function Navbar() {
     const { user, logout } = useAuth();
@@ -54,6 +55,7 @@ export function Navbar() {
 
                     {/* Auth Actions */}
                     <div className="hidden md:flex items-center space-x-3">
+                        <NotificationManager />
                         {user ? (
                             <div className="flex items-center space-x-3">
                                 <span className="text-sm text-text-secondary">
@@ -128,6 +130,14 @@ export function Navbar() {
                         </div>
                     </div>
                 )}
+            </div>
+            
+            {/* Mobile Floating Notification Button */}
+            <div className="md:hidden">
+                <NotificationManager 
+                    className="fixed bottom-6 right-6 z-50 shadow-xl rounded-full !text-white"
+                    variant="primary"
+                />
             </div>
         </nav >
     );

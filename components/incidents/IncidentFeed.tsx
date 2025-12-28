@@ -1,33 +1,39 @@
 'use client';
 
-import { Incident } from '@/types';
+import { Report } from '@/types';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { ThumbsUp, MapPin, Clock } from 'lucide-react';
 
 // Mock data for display
-const MOCK_EXISTING: Incident[] = [
+const MOCK_EXISTING: Report[] = [
     {
-        id: '1',
+        _id: '1',
+        sessionId: 'session_1',
         type: 'Infrastructure Collapse',
         description: 'Bridge near Station Square has a large crack appearing on the west pillar.',
         location: { lat: 20.2961, lng: 85.8245 },
-        priority: 'High',
-        status: 'Verified',
-        timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 mins ago
+        severity: 'high',
+        status: 'verified',
+        createdAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 mins ago
+        updatedAt: new Date().toISOString(),
         upvotes: 12,
-        isVerified: true
+        downvotes: 0,
+        duplicates: 0,
     },
     {
-        id: '2',
+        _id: '2',
+        sessionId: 'session_2',
         type: 'Accident',
         description: 'Two bike collision at the main intersection. Traffic blocked.',
         location: { lat: 20.30, lng: 85.83 },
-        priority: 'Medium',
-        status: 'Reported',
-        timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(), // 5 mins ago
+        severity: 'medium',
+        status: 'unverified',
+        createdAt: new Date(Date.now() - 1000 * 60 * 5).toISOString(), // 5 mins ago
+        updatedAt: new Date().toISOString(),
         upvotes: 3,
-        isVerified: false
+        downvotes: 0,
+        duplicates: 0,
     }
 ];
 
@@ -36,12 +42,12 @@ export function IncidentFeed() {
         <div className="space-y-4">
             <h3 className="text-lg font-semibold text-white mb-4">Recent Reports Recently Reported</h3>
             {MOCK_EXISTING.map((incident) => (
-                <Card key={incident.id} className="p-4 bg-bg-card hover:bg-bg-secondary transition-colors border-border-main">
+                <Card key={incident._id} className="p-4 bg-bg-card hover:bg-bg-secondary transition-colors border-border-main">
                     <div className="flex justify-between items-start mb-2">
-                        <Badge priority={incident.priority}>{incident.type}</Badge>
+                        <Badge priority={incident.severity}>{incident.type}</Badge>
                         <span className="text-xs text-text-muted flex items-center">
                             <Clock size={12} className="mr-1" />
-                            {new Date(incident.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            {new Date(incident.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                     </div>
 

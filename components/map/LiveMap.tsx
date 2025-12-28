@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Incident } from '@/types';
+import { Report } from '@/types';
 
 // Fix Leaflet default icon issue in Next.js
 const iconUrl = 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png';
@@ -34,8 +34,17 @@ function MapEvents({ onLocationSelect }: { onLocationSelect?: (lat: number, lng:
     return null;
 }
 
+// Component to update map view when center changes
+function MapUpdater({ center, zoom }: { center: [number, number], zoom: number }) {
+    const map = useMap();
+    useEffect(() => {
+        map.setView(center, zoom);
+    }, [center, zoom, map]);
+    return null;
+}
+
 interface LiveMapProps {
-    incidents?: Incident[];
+    incidents?: Report[];
     center?: [number, number];
     zoom?: number;
     interactive?: boolean;
@@ -72,6 +81,7 @@ export default function LiveMap({
                 className="h-full w-full rounded-lg z-0"
                 style={{ height: '100%', width: '100%' }}
             >
+                <MapUpdater center={center} zoom={zoom} />
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -81,7 +91,7 @@ export default function LiveMap({
                 {/* Render Incidents */}
                 {incidents.map((incident) => (
                     <Marker
-                        key={incident.id}
+                        key={incident._id}
                         position={[incident.location.lat, incident.location.lng]}
                         icon={defaultIcon}
                     >

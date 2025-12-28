@@ -7,7 +7,6 @@ export default function ReportPage() {
             <div className="max-w-7xl mx-auto h-full">
                 <div className="grid lg:grid-cols-12 gap-6 h-full">
 
-                    {/* Left: Existing Reports (Safety check to avoid duplicates) */}
                     <div className="hidden lg:block lg:col-span-4 overflow-y-auto pr-2" style={{ maxHeight: 'calc(100vh - 120px)' }}>
                         <div className="sticky top-0 bg-bg-main z-10 pb-4 mb-2">
                             <h1 className="text-2xl font-bold text-white">Before you report...</h1>
@@ -18,12 +17,9 @@ export default function ReportPage() {
                         <IncidentFeed />
                     </div>
 
-                    {/* Right: New Report Form */}
                     <div className="lg:col-span-8">
                         <ReportForm />
                     </div>
-
-                    {/* Mobile view 'Existing' hint could go here, but keeping simple for now */}
                 </div>
             </div>
         </div>

@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Report } from '@/types';
-import { IncidentCard } from './IncidentCard';
-import { IncidentDetailsModal } from './IncidentDetailsModal';
+import IncidentCard from './IncidentCard';
+import IncidentDetailsModal from './IncidentDetailsModal';
 import { Loader2 } from 'lucide-react';
 
 

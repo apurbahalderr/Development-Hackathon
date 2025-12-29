@@ -1,3 +1,6 @@
+"use client";
+
+import { MouseEvent } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { Activity, AlertTriangle } from 'lucide-react';
@@ -9,7 +12,7 @@ export function Hero() {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="text-center max-w-3xl mx-auto">
-                    
+
 
                     <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6">
                         The Pulse of <br />
@@ -27,11 +30,26 @@ export function Hero() {
                                 Report Issue Now
                             </Button>
                         </Link>
-                        <Link href="#how-it-works">
-                            <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8">
-                                How It Works
-                            </Button>
-                        </Link>
+                        <Button
+                            size="lg"
+                            variant="outline"
+                            className="w-full sm:w-auto h-14 px-8"
+                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                e.preventDefault();
+                                const el = document.getElementById('how-it-works');
+                                if (el) {
+                                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                    try {
+                                        window.history.replaceState(null, '', '#how-it-works');
+                                    } catch {}
+                                } else {
+                                    // fallback to anchor navigation
+                                    window.location.href = '#how-it-works';
+                                }
+                            }}
+                        >
+                            How It Works
+                        </Button>
                     </div>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Report } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 import { LayoutDashboard, MapPin, CheckCircle, XCircle, Clock } from 'lucide-react';
 
 const LiveMap = dynamic(() => import('@/components/map/LiveMap'), {
@@ -14,6 +15,7 @@ const LiveMap = dynamic(() => import('@/components/map/LiveMap'), {
 });
 
 export default function EmployeeDashboard() {
+    const { user } = useAuth();
     const [tasks, setTasks] = useState<Report[]>([]);
     const [loading, setLoading] = useState(true);
     const [processing, setProcessing] = useState<string | null>(null);
@@ -184,6 +186,18 @@ export default function EmployeeDashboard() {
                             incidents={tasks}
                             interactive={true}
                             className="h-full w-full"
+                            userLocation={user?.location}
+                            selectedIncident={(() => {
+                                // If there's a task and user has location, create a selectedIncident with employeeLocation
+                                // to trigger the path drawing in LiveMap
+                                if (tasks.length > 0 && user?.location) {
+                                    return {
+                                        ...tasks[0],
+                                        employeeLocation: user.location
+                                    };
+                                }
+                                return null;
+                            })()}
                         />
                     ) : (
                         <div className="h-full w-full bg-bg-secondary flex items-center justify-center">

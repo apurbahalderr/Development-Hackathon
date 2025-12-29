@@ -26,6 +26,7 @@ const LiveMap = dynamic(() => import('@/components/map/LiveMap'), {
     ssr: false
 });
 
+//TODO: the forwarding of report not done yett and also filter
 export default function ResponderDashboard() {
     const { user } = useAuth();
     const [incidents, setIncidents] = useState<Report[]>([]);

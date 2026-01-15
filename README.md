@@ -2,6 +2,7 @@
 
 **Live Website**: [https://pulstrix.vercel.app](https://pulstrix.vercel.app)
 **For Responder Login**: Use RESPONDER2025 as the access code
+
 ![PulstriX Banner](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
 ![Next.js](https://img.shields.io/badge/Next.js-16.1-black?style=for-the-badge&logo=next.js)
 ![Python](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python)
